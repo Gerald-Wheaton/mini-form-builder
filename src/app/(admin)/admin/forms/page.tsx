@@ -109,16 +109,16 @@ export default function FormsListPage() {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-4">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold">Forms Management</h1>
           <p className="text-muted-foreground mt-2">
             Manage your forms and view submissions
           </p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 justify-end">
           <Button onClick={handleLogout} variant="outline">
             Logout
           </Button>
@@ -151,11 +151,14 @@ export default function FormsListPage() {
           {forms.map((form) => (
             <Card key={form.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg truncate" title={form.title}>
+                <div className="flex justify-between items-start gap-2 flex-wrap">
+                  <CardTitle
+                    className="text-lg flex-1 min-w-0"
+                    title={form.title}
+                  >
                     {form.title}
                   </CardTitle>
-                  <Badge variant="secondary">
+                  <Badge variant="secondary" className="flex-shrink-0">
                     {form.submissionCount} submissions
                   </Badge>
                 </div>
