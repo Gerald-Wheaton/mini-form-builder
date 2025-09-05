@@ -1,41 +1,48 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Lock, User } from 'lucide-react'
-import { clientAuth } from '@/lib/auth'
+import { clientAuth, validateCredentials } from '@/lib/auth'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Get redirect URL from query params (set by middleware)
+  const redirectTo = searchParams.get('redirect') || '/admin/forms'
+
   useEffect(() => {
-    // If already logged in, redirect to admin
+    // If already logged in, redirect to intended destination
     if (clientAuth.isLoggedIn()) {
-      router.push('/admin/forms')
+      router.push(redirectTo)
     }
-  }, [router])
+  }, [router, redirectTo])
 
   const handleLogin = async () => {
     setError(null)
     setLoading(true)
 
     try {
-      // For testing purposes, skip actual authentication
-      // In a real implementation, you would validate credentials here
+      // Validate credentials
+      if (!validateCredentials(username, password)) {
+        setError('Invalid username or password. Please try again.')
+        return
+      }
 
       // Set logged in state
       clientAuth.login()
 
-      // Redirect to admin forms
-      router.push('/admin/forms')
+      // Redirect to intended destination or admin forms
+      router.push(redirectTo)
     } catch (err) {
       setError('Login failed. Please try again.')
     } finally {
@@ -110,16 +117,10 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Credentials Hint (for testing) */}
-              <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded text-sm">
-                <strong>For testing:</strong> Click "Sign In" to access admin
-                (credentials validation temporarily disabled)
-              </div>
-
               {/* Submit Button */}
               <Button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !username.trim() || !password.trim()}
                 className="w-full"
                 size="lg"
               >
@@ -128,14 +129,6 @@ export default function LoginPage() {
             </form>
           </CardContent>
         </Card>
-
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-500">
-          <p>Default credentials: admin / password123</p>
-          <p className="mt-1">
-            (Authentication temporarily bypassed for testing)
-          </p>
-        </div>
       </div>
     </div>
   )
