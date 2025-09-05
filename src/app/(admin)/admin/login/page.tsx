@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -11,17 +11,21 @@ import { clientAuth } from '@/lib/auth'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Get redirect URL from query params (set by middleware)
+  const redirectTo = searchParams.get('redirect') || '/admin/forms'
+
   useEffect(() => {
-    // If already logged in, redirect to admin
+    // If already logged in, redirect to intended destination
     if (clientAuth.isLoggedIn()) {
-      router.push('/admin/forms')
+      router.push(redirectTo)
     }
-  }, [router])
+  }, [router, redirectTo])
 
   const handleLogin = async () => {
     setError(null)
@@ -34,8 +38,8 @@ export default function LoginPage() {
       // Set logged in state
       clientAuth.login()
 
-      // Redirect to admin forms
-      router.push('/admin/forms')
+      // Redirect to intended destination or admin forms
+      router.push(redirectTo)
     } catch (err) {
       setError('Login failed. Please try again.')
     } finally {

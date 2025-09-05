@@ -1,5 +1,6 @@
 'use client'
 import { useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
@@ -14,6 +15,7 @@ import {
   Monitor,
   Smartphone,
   Loader2,
+  ArrowLeft,
 } from 'lucide-react'
 import { SectionCard } from './section-card'
 import { PreviewForm } from './preview-form'
@@ -32,6 +34,7 @@ export function FormBuilder({
   formId,
   onSave,
 }: FormBuilderProps = {}) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('edit')
   const [validationErrors, setValidationErrors] = useState<string[]>([])
   const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>(
@@ -159,26 +162,41 @@ export function FormBuilder({
     }
   }
 
+  const handleBackToDashboard = () => {
+    router.push('/admin/forms')
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40">
-        <div className="max-w-4xl mx-auto p-4 md:p-6">
+        <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-4">
+          <Button
+            variant="ghost"
+            onClick={handleBackToDashboard}
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden sm:inline">Back to Dashboard</span>
+            <span className="sm:hidden">Back</span>
+          </Button>
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <TabsList className="grid w-48 grid-cols-2 order-2 md:order-1">
-                <TabsTrigger value="edit">Edit</TabsTrigger>
-                <TabsTrigger
-                  value="preview"
-                  className="flex items-center gap-2"
-                >
-                  <Eye className="w-4 h-4" />
-                  Preview
-                </TabsTrigger>
-              </TabsList>
+            <div className="flex flex-col justify-center items-center md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex items-center gap-4 order-2 md:order-1">
+                <TabsList className="grid w-48 grid-cols-2">
+                  <TabsTrigger value="edit">Edit</TabsTrigger>
+                  <TabsTrigger
+                    value="preview"
+                    className="flex items-center gap-2"
+                  >
+                    <Eye className="w-4 h-4" />
+                    Preview
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
               <div className="flex items-center justify-between md:justify-end gap-3 order-1 md:order-2">
                 <div className="flex items-center gap-3">

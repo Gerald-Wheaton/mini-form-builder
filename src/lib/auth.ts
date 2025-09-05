@@ -62,6 +62,28 @@ export function createUnauthorizedResponse(message = 'Unauthorized'): Response {
   })
 }
 
+/**
+ * Set HTTP-only auth cookie (for middleware)
+ */
+function setAuthCookie(value: string) {
+  if (typeof document !== 'undefined') {
+    // Set cookie that middleware can read
+    document.cookie = `admin-auth=${value}; path=/; max-age=${
+      60 * 60 * 24 * 7
+    }; SameSite=Lax`
+  }
+}
+
+/**
+ * Clear HTTP-only auth cookie
+ */
+function clearAuthCookie() {
+  if (typeof document !== 'undefined') {
+    document.cookie =
+      'admin-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  }
+}
+
 export const clientAuth = {
   isLoggedIn(): boolean {
     if (typeof window === 'undefined') return false
@@ -71,12 +93,14 @@ export const clientAuth = {
   login(): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem('isAdmin', 'true')
+      setAuthCookie(ADMIN_AUTH_TOKEN)
     }
   },
 
   logout(): void {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('isAdmin')
+      clearAuthCookie()
     }
   },
 }
