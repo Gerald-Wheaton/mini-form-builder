@@ -42,7 +42,7 @@
     - [x] Decode `Authorization: Basic <base64>` header
     - [x] Compare against hardcoded `admin/password123` credentials
     - [x] Return 401 on auth failure
-  - [x] `app/api/forms/[id]/route.ts` - GET (read), PATCH (update)
+  - [x] `app/api/forms/[id]/route.ts` - GET (read only — NO PATCH)
     - [x] Same Basic Auth validation for admin endpoints
   - [x] `app/api/forms/[id]/submissions/route.ts` - POST (submit)
     - [x] Public endpoint (no auth required)
@@ -58,7 +58,7 @@
 
   - [x] `app/(admin)/admin/forms/page.tsx` - Forms list with public links
   - [x] `app/(admin)/admin/forms/new/page.tsx` - Form creation interface
-  - [x] `app/(admin)/admin/forms/[id]/page.tsx` - Form editing interface
+  - [x] `app/(admin)/admin/forms/[id]/page.tsx` - Form read-only view interface
   - [x] Add Basic Auth headers to all API calls from admin interface
 
 - [ ] **Form Builder Components**

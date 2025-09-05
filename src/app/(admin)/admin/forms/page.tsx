@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, ExternalLink, Edit, Calendar } from 'lucide-react'
+import { Plus, ExternalLink, Eye, Calendar } from 'lucide-react'
 import { createBasicAuthHeader, clientAuth } from '@/lib/auth'
 
 interface FormListItem {
@@ -157,8 +157,8 @@ export default function FormsListPage() {
                   <div className="flex gap-2">
                     <Button asChild size="sm" className="flex-1">
                       <Link href={`/admin/forms/${form.id}`}>
-                        <Edit className="mr-2 h-3 w-3" />
-                        Edit
+                        <Eye className="mr-2 h-3 w-3" />
+                        View
                       </Link>
                     </Button>
                     <Button asChild size="sm" variant="outline">

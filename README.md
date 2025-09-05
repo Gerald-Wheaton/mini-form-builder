@@ -34,3 +34,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Future Work
+
+- **Editing forms**: Add `PATCH /api/forms/:id` and an editable admin detail page.
+- **Submission viewer**: Admin UI to list and filter submissions.
+- **Auth hardening**: Replace Basic header with real sessions and CSRF protection if multi-user is required.
+- **Field types**: Extend beyond text/number (select, radio, date) and richer validation.
