@@ -52,8 +52,6 @@ export const formCreateSchema = z.object({
     ),
 })
 
-export const formUpdateSchema = formCreateSchema.partial()
-
 export const formSubmissionSchema = z.record(
   z.string(), // field ID
   z.union([z.string(), z.number()]), // field value
@@ -66,8 +64,6 @@ export const createFormRequestSchema = z.object({
     .min(1)
     .max(FORM_CONSTRAINTS.MAX_SECTIONS),
 })
-
-export const updateFormRequestSchema = createFormRequestSchema.partial()
 
 export const submitFormRequestSchema = z.object({
   payload: formSubmissionSchema,

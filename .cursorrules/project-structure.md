@@ -19,20 +19,48 @@
 - `app/(admin)/admin/login/page.tsx`
 - `app/(admin)/admin/forms/page.tsx` (list)
 - `app/(admin)/admin/forms/new/page.tsx` (create)
-- `app/(admin)/admin/forms/[id]/page.tsx` (view/edit lightweight)
+- `app/(admin)/admin/forms/[id]/page.tsx` (read-only view)
 - `app/form/[id]/page.tsx` (public render/submit)
 - `app/api/forms/route.ts` (POST create, GET list)
-- `app/api/forms/[id]/route.ts` (GET read, PATCH update)
+- `app/api/forms/[id]/route.ts` (GET read only — NO PATCH)
 - `app/api/forms/[id]/submissions/route.ts` (POST)
 - `app/api/ai/suggest/route.ts` (POST) — optional
 - `components/form-builder/*` (pure UI, client)
 - `lib/prisma.ts`, `lib/auth.ts`, `lib/validation.ts`, `lib/types.ts`
 - `prisma/schema.prisma`, `prisma/seed.ts`
 
+## API Contracts
+
+- `POST /api/forms` → `{ title: string, sections: Section[] }` → `{ id, publicId }`
+- `GET /api/forms` → `Array<{ id, title, publicUrl }>`
+- `GET /api/forms/:id` → `{ id, title, sections, publicId }`
+- `POST /api/forms/:id/submissions` → body `{ values: Record<string, string | number> }` → 201
+- Optional: `POST /api/ai/suggest` → `{ prompt: string }` → `{ title, sections }`
+
+## Data Model
+
+- `Form` (JSON sections) and `Submission` ONLY. Do not normalize sections/fields into tables.
+
+## Auth (hardcoded)
+
+- Header-based validation (Basic auth) and localStorage flag. No cookies or server sessions.
+
+## What NOT to build
+
+- No edit/update endpoints (no `PATCH`); create-only.
+- No submission viewer/analytics UI.
+- No sessions/JWT/RBAC.
+
+## UI Rules
+
+- `app/(admin)/admin/forms/new/page.tsx` is create-only.
+- `app/(admin)/admin/forms/[id]/page.tsx` is **read-only view** (optional). If present, it must not allow editing.
+- Keep the optional AI button as real (not stubbed).
+
 ## Project UI Functionality
 
 - Admin builder:
-- Inline create: Title input, “Add Section” (disabled at 2), within section “Add Field” (disabled at 3).
+- Inline create: Title input, "Add Section" (disabled at 2), within section "Add Field" (disabled at 3).
 - Field editor: label input + select(type).
 - Show live validity counts (sections/fields).
 - Buttons: Save (primary), Generate with AI (secondary, optional).
