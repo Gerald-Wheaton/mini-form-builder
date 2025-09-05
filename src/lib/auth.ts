@@ -84,6 +84,19 @@ function clearAuthCookie() {
   }
 }
 
+/**
+ * Validates credentials on the client side
+ * @param username - The entered username
+ * @param password - The entered password
+ * @returns true if credentials are valid, false otherwise
+ */
+export function validateCredentials(
+  username: string,
+  password: string,
+): boolean {
+  return username === ADMIN_USERNAME && password === ADMIN_PASSWORD
+}
+
 export const clientAuth = {
   isLoggedIn(): boolean {
     if (typeof window === 'undefined') return false

@@ -111,14 +111,14 @@ export default function FormsListPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold">Forms Management</h1>
           <p className="text-muted-foreground mt-2">
             Manage your forms and view submissions
           </p>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 justify-end">
           <Button onClick={handleLogout} variant="outline">
             Logout
           </Button>
