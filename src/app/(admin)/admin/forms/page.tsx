@@ -151,11 +151,14 @@ export default function FormsListPage() {
           {forms.map((form) => (
             <Card key={form.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg truncate" title={form.title}>
+                <div className="flex justify-between items-start gap-2 flex-wrap">
+                  <CardTitle
+                    className="text-lg flex-1 min-w-0"
+                    title={form.title}
+                  >
                     {form.title}
                   </CardTitle>
-                  <Badge variant="secondary">
+                  <Badge variant="secondary" className="flex-shrink-0">
                     {form.submissionCount} submissions
                   </Badge>
                 </div>

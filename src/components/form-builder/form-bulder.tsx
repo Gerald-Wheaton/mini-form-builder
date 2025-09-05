@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { SectionCard } from './section-card'
 import { PreviewForm } from './preview-form'
+import { AIGenerationDialog } from './ai-generation-dialog'
 import { createForm, updateForm } from '@/lib/api'
 import { validateFormBuilderConstraints } from '@/lib/form-utils'
 import type { FormData, Section } from './types'
@@ -42,6 +43,8 @@ export function FormBuilder({
   )
   const [isSaving, setIsSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
+  const [isAIDialogOpen, setIsAIDialogOpen] = useState(false)
+  const [hasUsedAI, setHasUsedAI] = useState(false)
   const [formData, setFormData] = useState<FormData>(
     initialFormData || {
       title: 'Untitled Form',
@@ -146,8 +149,11 @@ export function FormBuilder({
         setSaveSuccess(true)
         onSave?.(formData, result.data?.id || formId)
 
-        // Clear success message after 3 seconds
-        setTimeout(() => setSaveSuccess(false), 3000)
+        // Show success message briefly, then redirect
+        setTimeout(() => {
+          setSaveSuccess(false)
+          router.push('/admin/forms')
+        }, 2000)
       } else {
         setValidationErrors([
           result.error || 'Failed to save form',
@@ -164,6 +170,12 @@ export function FormBuilder({
 
   const handleBackToDashboard = () => {
     router.push('/admin/forms')
+  }
+
+  const handleAIGeneration = (aiFormData: FormData) => {
+    setFormData(aiFormData)
+    setHasUsedAI(true)
+    setValidationErrors([])
   }
 
   return (
@@ -203,10 +215,16 @@ export function FormBuilder({
                   <Button
                     variant="outline"
                     className="flex items-center gap-2 bg-transparent"
+                    onClick={() => setIsAIDialogOpen(true)}
+                    disabled={hasUsedAI}
                   >
                     <Sparkles className="w-4 h-4" />
-                    <span className="hidden sm:inline">Generate with AI</span>
-                    <span className="sm:hidden">Generate</span>
+                    <span className="hidden sm:inline">
+                      {hasUsedAI ? 'AI Used' : 'Generate with AI'}
+                    </span>
+                    <span className="sm:hidden">
+                      {hasUsedAI ? 'Used' : 'Generate'}
+                    </span>
                   </Button>
                   <Button
                     onClick={handleManualSave}
@@ -351,6 +369,12 @@ export function FormBuilder({
           </TabsContent>
         </Tabs>
       </div>
+
+      <AIGenerationDialog
+        isOpen={isAIDialogOpen}
+        onClose={() => setIsAIDialogOpen(false)}
+        onFormGenerated={handleAIGeneration}
+      />
     </div>
   )
 }
