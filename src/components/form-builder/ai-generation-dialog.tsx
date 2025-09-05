@@ -113,7 +113,7 @@ export function AIGenerationDialog({
             Generate Form with AI
           </DialogTitle>
           <DialogDescription>
-            Describe the form you want to create and I'll build it for you.
+            Describe the form you want to create and I&apos;ll build it for you.
           </DialogDescription>
         </DialogHeader>
 
@@ -124,10 +124,11 @@ export function AIGenerationDialog({
               <div className="text-center text-muted-foreground py-8">
                 <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-50" />
                 <p className="text-sm">
-                  Tell me about the form you'd like to create...
+                  Tell me about the form you&apos;d like to create...
                 </p>
                 <p className="text-xs mt-1 opacity-75">
-                  Example: "A contact form with name, email, and message fields"
+                  Example: &quot;A contact form with name, email, and message
+                  fields&quot;
                 </p>
               </div>
             )}

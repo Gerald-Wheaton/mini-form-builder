@@ -85,7 +85,7 @@ export function PreviewForm({ formData, previewMode }: PreviewFormProps) {
               Form Submitted!
             </h2>
             <p className="text-muted-foreground">
-              Thank you for your submission. We'll get back to you soon.
+              Thank you for your submission. We&apos;ll get back to you soon.
             </p>
           </div>
         ) : (
@@ -148,7 +148,7 @@ export function PreviewForm({ formData, previewMode }: PreviewFormProps) {
                       )}
                       {field.type === 'email' && (
                         <p className="text-xs text-muted-foreground">
-                          We'll never share your email address
+                          We&apos;ll never share your email address
                         </p>
                       )}
                       {field.type === 'phone' && (
