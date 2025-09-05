@@ -1,25 +1,33 @@
-// Form field types
-export type FieldType = 'text' | 'number'
+// Form field types - updated to match form builder UI
+export type FieldType = 'text' | 'number' | 'email' | 'phone' | 'textarea'
 
-// Form field structure
+// Form field structure - updated to match form builder UI
 export interface FormField {
   id: string
   label: string
+  description?: string
   type: FieldType
+  placeholder?: string
   required: boolean
 }
 
-// Form section structure
+// Form section structure - updated to match form builder UI
 export interface FormSection {
   id: string
-  title: string
+  name: string // Changed from 'title' to 'name' to match form builder
   fields: FormField[]
 }
 
 // Complete form structure
 export interface FormStructure {
+  title: string // Added form title
   sections: FormSection[]
 }
+
+// Type alias to match form builder component types
+export type FormBuilderData = FormStructure
+export type FormBuilderField = FormField
+export type FormBuilderSection = FormSection
 
 // Form data from database
 export interface Form {

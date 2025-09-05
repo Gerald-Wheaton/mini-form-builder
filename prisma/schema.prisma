@@ -4,6 +4,25 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+/**
+ * FORM BUILDER SCHEMA
+ * 
+ * This schema supports a dynamic form builder with the following structure:
+ * 
+ * Form -> Contains title and sections (stored as JSON)
+ * Section -> Contains name and fields
+ * Field -> Contains id, label, description, type, placeholder, required
+ * 
+ * Supported field types: 'text' | 'number' | 'email' | 'phone' | 'textarea'
+ * 
+ * Constraints:
+ * - Max 2 sections per form
+ * - Max 3 fields per section
+ * - Form title: 1-100 characters
+ * - Section name: 1-50 characters
+ * - Field label: 1-100 characters
+ */
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,20 +34,24 @@ datasource db {
 
 model Form {
   id          String   @id @default(uuid())
-  title       String
-  sections    String   // JSON string containing form sections
+  title       String   // Form title (max 100 chars enforced by validation)
+  sections    String  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   publicId    String   @unique @default(uuid())
   
   submissions Submission[]
+  
+  @@map("forms")
 }
 
 model Submission {
   id        String   @id @default(uuid())
   formId    String
-  payload   String   // JSON string containing submission data
+  payload   String  
   createdAt DateTime @default(now())
   
   form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  
+  @@map("submissions")
 }

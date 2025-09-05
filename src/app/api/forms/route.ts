@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
         updatedAt: form.updatedAt,
         publicId: form.publicId,
         submissionCount: form._count.submissions,
-        publicUrl: `/form/${form.publicId}`,
+        publicUrl: `/public/${form.publicId}`,
       })),
     })
   } catch (error) {

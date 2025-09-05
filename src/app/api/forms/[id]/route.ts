@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { validateRequestAuth, createUnauthorizedResponse } from '@/lib/auth'
+import {
+  updateFormRequestSchema,
+  validateFormConstraints,
+} from '@/lib/validation'
 import type { FormSection } from '@/lib/types'
 
 interface RouteParams {
@@ -36,7 +40,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       updatedAt: form.updatedAt,
       publicId: form.publicId,
       submissionCount: form._count.submissions,
-      publicUrl: `/form/${form.publicId}`,
+      publicUrl: `/public/${form.publicId}`,
     })
   } catch (error) {
     console.error('Error fetching form:', error)
