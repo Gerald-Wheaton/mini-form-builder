@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Form {
+  id          String   @id @default(uuid())
+  title       String
+  sections    String   // JSON string containing form sections
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  publicId    String   @unique @default(uuid())
+  
+  submissions Submission[]
+}
+
+model Submission {
+  id        String   @id @default(uuid())
+  formId    String
+  payload   String   // JSON string containing submission data
+  createdAt DateTime @default(now())
+  
+  form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+}
