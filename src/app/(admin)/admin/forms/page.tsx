@@ -5,7 +5,15 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, ExternalLink, Eye, Calendar } from 'lucide-react'
+import {
+  Plus,
+  ExternalLink,
+  Eye,
+  Calendar,
+  Globe,
+  Copy,
+  Check,
+} from 'lucide-react'
 import { createBasicAuthHeader, clientAuth } from '@/lib/auth'
 
 interface FormListItem {
@@ -22,6 +30,7 @@ export default function FormsListPage() {
   const [forms, setForms] = useState<FormListItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [copiedFormId, setCopiedFormId] = useState<string | null>(null)
 
   useEffect(() => {
     // Check if user is logged in
@@ -64,6 +73,20 @@ export default function FormsListPage() {
   const handleLogout = () => {
     clientAuth.logout()
     window.location.href = '/admin/login'
+  }
+
+  const copyToClipboard = async (form: FormListItem) => {
+    try {
+      const fullUrl = `${window.location.origin}${form.publicUrl}`
+      await navigator.clipboard.writeText(fullUrl)
+      setCopiedFormId(form.id)
+
+      setTimeout(() => {
+        setCopiedFormId(null)
+      }, 2000)
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error)
+    }
   }
 
   if (loading) {
@@ -156,18 +179,8 @@ export default function FormsListPage() {
                   {/* Actions */}
                   <div className="flex gap-2">
                     <Button asChild size="sm" className="flex-1">
-                      <Link href={`/admin/forms/${form.id}`}>
+                      <Link href={`${form.publicUrl}`}>
                         <Eye className="mr-2 h-3 w-3" />
-                        View
-                      </Link>
-                    </Button>
-                    <Button asChild size="sm" variant="outline">
-                      <Link
-                        href={form.publicUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="mr-2 h-3 w-3" />
                         View
                       </Link>
                     </Button>
@@ -175,10 +188,26 @@ export default function FormsListPage() {
 
                   {/* Public URL */}
                   <div className="text-xs text-muted-foreground">
-                    <div className="font-medium mb-1">Public URL:</div>
-                    <div className="bg-muted p-2 rounded text-xs font-mono break-all">
-                      {window.location.origin}
-                      {form.publicUrl}
+                    <div className="flex items-center gap-1 font-medium mb-1">
+                      <Globe className="h-3 w-3" />
+                      Public URL:
+                    </div>
+                    <div
+                      className="bg-muted p-2 rounded text-xs font-mono break-all cursor-pointer hover:bg-muted/80 transition-colors flex items-center justify-between group"
+                      onClick={() => copyToClipboard(form)}
+                      title="Click to copy URL"
+                    >
+                      <span className="flex-1">
+                        {window.location.origin}
+                        {form.publicUrl}
+                      </span>
+                      <div className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {copiedFormId === form.id ? (
+                          <Check className="h-3 w-3 text-green-600" />
+                        ) : (
+                          <Copy className="h-3 w-3" />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

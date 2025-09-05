@@ -1,0 +1,57 @@
+{
+  "title": "Customer Feedback Form",
+  "sections": [
+    {
+      "id": "section-1",
+      "name": "Contact Information",
+      "fields": [
+        {
+          "id": "field-1",
+          "label": "Full Name",
+          "description": "Please enter your full legal name",
+          "type": "text",
+          "placeholder": "e.g., John Smith",
+          "required": true
+        },
+        {
+          "id": "field-2",
+          "label": "Email Address",
+          "description": "We'll use this to send you updates",
+          "type": "email",
+          "placeholder": "e.g., john@example.com",
+          "required": true
+        },
+        {
+          "id": "field-3",
+          "label": "Phone Number",
+          "description": "Optional contact number",
+          "type": "phone",
+          "placeholder": "e.g., +1 (555) 123-4567",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "section-2",
+      "name": "Feedback Details",
+      "fields": [
+        {
+          "id": "field-4",
+          "label": "Rating",
+          "description": "Rate your experience from 1-10",
+          "type": "number",
+          "placeholder": "e.g., 8",
+          "required": true
+        },
+        {
+          "id": "field-5",
+          "label": "Comments",
+          "description": "Tell us about your experience",
+          "type": "textarea",
+          "placeholder": "Your detailed feedback here...",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

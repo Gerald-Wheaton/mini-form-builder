@@ -61,12 +61,13 @@
   - [x] `app/(admin)/admin/forms/[id]/page.tsx` - Form read-only view interface
   - [x] Add Basic Auth headers to all API calls from admin interface
 
-- [ ] **Form Builder Components**
-  - [ ] `components/form-builder/FormBuilder.tsx` - Main builder interface
-  - [ ] `components/form-builder/SectionEditor.tsx` - Section management (max 2)
-  - [ ] `components/form-builder/FieldEditor.tsx` - Field management (max 3 per section)
-  - [ ] Real-time validation counters and constraint enforcement
-  - [ ] Include a preview window that auser may see the entire time. This should update while a user is building their form
+- [x] **Form Builder Components**
+
+  - [x] `components/form-builder/FormBuilder.tsx` - Main builder interface
+  - [x] `components/form-builder/SectionEditor.tsx` - Section management (max 2)
+  - [x] `components/form-builder/FieldEditor.tsx` - Field management (max 3 per section)
+  - [x] Real-time validation counters and constraint enforcement
+  - [x] Include a preview window that auser may see the entire time. This should update while a user is building their form
 
 ### Phase 5: Public Form Interface
 

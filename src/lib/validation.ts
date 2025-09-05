@@ -1,24 +1,32 @@
 import { z } from 'zod'
 import { FORM_CONSTRAINTS } from './types'
 
-export const fieldTypeSchema = z.enum(['text', 'number'])
+export const fieldTypeSchema = z.enum([
+  'text',
+  'number',
+  'email',
+  'phone',
+  'textarea',
+])
 
 export const formFieldSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().min(1, 'Field ID is required'),
   label: z
     .string()
     .min(1, 'Field label is required')
     .max(100, 'Field label too long'),
+  description: z.string().optional(),
   type: fieldTypeSchema,
+  placeholder: z.string().optional(),
   required: z.boolean(),
 })
 
 export const formSectionSchema = z.object({
-  id: z.string().uuid(),
-  title: z
+  id: z.string().min(1, 'Section ID is required'),
+  name: z
     .string()
-    .min(1, 'Section title is required')
-    .max(100, 'Section title too long'),
+    .min(1, 'Section name is required')
+    .max(50, 'Section name too long'),
   fields: z
     .array(formFieldSchema)
     .min(1, 'Section must have at least one field')
@@ -29,6 +37,10 @@ export const formSectionSchema = z.object({
 })
 
 export const formStructureSchema = z.object({
+  title: z
+    .string()
+    .min(1, 'Form title is required')
+    .max(100, 'Form title too long'),
   sections: z
     .array(formSectionSchema)
     .min(1, 'Form must have at least one section')
@@ -58,6 +70,14 @@ export const formSubmissionSchema = z.record(
 )
 
 export const createFormRequestSchema = z.object({
+  title: z.string().min(1).max(200),
+  sections: z
+    .array(formSectionSchema)
+    .min(1)
+    .max(FORM_CONSTRAINTS.MAX_SECTIONS),
+})
+
+export const updateFormRequestSchema = z.object({
   title: z.string().min(1).max(200),
   sections: z
     .array(formSectionSchema)
